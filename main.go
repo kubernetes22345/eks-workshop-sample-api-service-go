@@ -14,7 +14,7 @@ func main() {
 
 		f := fib()
 
-		res := &response{Message: "Hello Rohan!!"}
+		res := &response{Message: "Hello World - Build Automated CICD pipeline from Jenkins through Code Build!!"}
 
 		for _, e := range os.Environ() {
 			pair := strings.Split(e, "=")
