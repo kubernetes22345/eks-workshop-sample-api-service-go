@@ -19,9 +19,9 @@ phases:
         
   build:
     commands:
-#       - docker build -t testjenkinscodebuild:latest .
-#       - docker tag testjenkinscodebuild:latest 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
-#       - docker push 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
+      - docker build -t testjenkinscodebuild:latest .
+      - docker tag testjenkinscodebuild:latest 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
+      - docker push 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
   post_build:
     commands:
       - CREDENTIALS=$(aws sts assume-role --role-arn arn:aws:iam::478730168734:role/service-role/codebuild-testjenkinscodebuild-service-role --role-session-name codebuild-kubectl --duration-seconds 900)
@@ -29,7 +29,7 @@ phases:
       - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - aws eks update-kubeconfig --profile app04d1--name app04d1-dev-maxedge-eks-01-cluster --region us-east-1
+      - aws eks update-kubeconfig --profile app04d1 --name app04d1-dev-maxedge-eks-01-cluster --region us-east-1
       - kubectl get nodes
       - kubectl version --short
       - kubectl apply -f hello-k8s.yml
