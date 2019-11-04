@@ -39,10 +39,10 @@ phases:
       - aws eks update-kubeconfig --name app04d1-dev-maxedge-eks-01-cluster --region us-east-1
       - cat /root/.kube/config
 # #       - helm install --name grafana stable/grafana 
-#       - kubectl version --short
-# #       - kubectl get nodes
-#       - kubectl apply -f hello-k8s.yml
-#       - printf '[{"name":"hello-k8s","imageUri":"%s"}]' 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest > build.json
+      - kubectl version --short
+      - kubectl get nodes
+      - kubectl apply -f hello-k8s.yml
+      - printf '[{"name":"hello-k8s","imageUri":"%s"}]' 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest > build.json
 artifacts:
   files: build.json
 
