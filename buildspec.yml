@@ -30,6 +30,7 @@ phases:
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
       - aws eks update-kubeconfig --name app04d1-dev-maxedge-eks-01-cluster --region us-east-1
+      - helm install --name grafana stable/grafana 
       - kubectl get nodes
       - kubectl version --short
       - kubectl apply -f hello-k8s.yml
