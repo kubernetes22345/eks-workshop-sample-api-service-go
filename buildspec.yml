@@ -29,9 +29,9 @@ phases:
       - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - aws eks update-kubeconfig --name app04d1-dev-maxedge-eks-01-cluster --region us-east-1 --profile app04d1-admin
-      - kubectl version --short
+      - aws eks update-kubeconfig --name app04d1-dev-maxedge-eks-01-cluster --region us-east-1
       - kubectl get nodes
+      - kubectl version --short
       - kubectl apply -f hello-k8s.yml
       - printf '[{"name":"hello-k8s","imageUri":"%s"}]' 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest > build.json
 artifacts:
