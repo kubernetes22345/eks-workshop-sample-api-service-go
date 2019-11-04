@@ -19,7 +19,7 @@ phases:
         
   build:
     commands:
-      - docker build -t testjenkinscodebuild:latest .
+      - docker build -t 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild .
       - docker tag testjenkinscodebuild:latest 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
       - docker push 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
   post_build:
