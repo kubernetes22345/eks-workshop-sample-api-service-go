@@ -37,7 +37,7 @@ phases:
       - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - aws eks update-kubeconfig --name app04d1-dev-maxedge-eks-01-cluster --region us-east-1
+      - aws eks update-kubeconfig --name eg-testing-eks-cluster --region us-east-1
 #       - cat /root/.kube/config
       - helm install --name grafana stable/grafana 
 #       - kubectl version --short
