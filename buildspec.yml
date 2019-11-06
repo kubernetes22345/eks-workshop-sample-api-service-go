@@ -1,5 +1,16 @@
 ---
 version: 0.2
+env:
+  variables:
+    # This S3 bucket will be used to store the packaged Lambda deployment bundle.
+    # Make sure to provide a valid S3 bucket name (it must exist already).
+    # The AWS CodeBuild IAM role must allow write access to it.
+    NAMESPACE: "grafana"
+    CHART_NAME: "grafana"
+    RELEASE_NAME: "my-grafana"
+    EKS_CLUSTER: "eg-testing-eks-cluster"
+    REGION: "us-east-1"
+    
 phases:
   install:
     runtime-versions:
@@ -32,7 +43,6 @@ phases:
 #       - docker build -t 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild .
       
       # - docker tag testjenkinscodebuild 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
-      
   post_build:
     commands:
       - echo Entering post build phase ......
@@ -43,15 +53,24 @@ phases:
       - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - aws eks update-kubeconfig --name eg-testing-eks-cluster --region us-east-1
+      - aws eks update-kubeconfig --name $EKS_CLUSTER --region $REGION
 #       - cat /root/.kube/config
       - kubectl get namespaces
       - helm init --client-only --skip-refresh
       - echo "Happy Helming"
       - helm ls 
-      - helm lint grafana
+      - helm lint $CHART_NAME
+      - |-
+          if [ "$CHART_NAME" -gt "ok" ]; then
+            echo "Helm Chart $CHART_NAME is good for dry run"
+          fi
       # - helm upgrade -i install my-grafana grafana
-      - helm upgrade -i --install my-grafana grafana --namespace grafana
+      - helm upgrade -i --install $RELEASE_NAME $CHART_NAME --namespace $NAMESPACE --dry-run
+      # - |-
+      #     if [ "$CHART_NAME" -gt "ok" ]; then
+      #       echo "Helm Chart $CHART_NAME is good for dry run"
+      #     fi
+      - helm upgrade -i --install $RELEASE_NAME $CHART_NAME --namespace grafana
 #       - kubectl version --short
 #       - kubectl get nodes
 #       - kubectl apply -f hello-k8s.yml
