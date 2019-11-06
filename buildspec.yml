@@ -39,7 +39,7 @@ phases:
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
       - aws eks update-kubeconfig --name eg-testing-eks-cluster --region us-east-1
 #       - cat /root/.kube/config
-      - helm init --upgrade
+      - helm init --client-only --skip-refresh
       - helm ls 
       - helm upgrade -i install --name grafana stable/grafana 
 #       - kubectl version --short
