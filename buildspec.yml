@@ -5,6 +5,7 @@ phases:
     runtime-versions:
       docker: 18
     commands:
+      - echo Entering install phase...
       - curl -sS -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
       - curl -sS -o kubectl https://storage.googleapis.com/kubernetes-release/release/v1.16.0/bin/linux/amd64/kubectl
       - chmod +x ./kubectl ./aws-iam-authenticator
@@ -18,6 +19,8 @@ phases:
       - mv ./linux-amd64/helm /usr/local/bin/helm
   pre_build:
       commands:
+        - echo Entering pre building phase....
+        - echo Build completed on `date`
 #         - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
 #         - sed -i 's@CONTAINER_IMAGE@'"478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest"'@' hello-k8s.yml
 #         - $(aws ecr get-login --no-include-email)
@@ -25,12 +28,15 @@ phases:
         
   build:
     commands:
+      - echo Entering building phase....
 #       - docker build -t 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild .
       
       # - docker tag testjenkinscodebuild 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
       
   post_build:
     commands:
+      - echo Entering post build phase ......
+      - echo Build completed on `date`
 #       - docker push 478730168734.dkr.ecr.us-east-1.amazonaws.com/testjenkinscodebuild:latest
       - CREDENTIALS=$(aws sts assume-role --role-arn arn:aws:iam::165942629469:role/EksWorkshopCodeBuildKubectlRole --role-session-name testjenkinscodebuild --duration-seconds 900)
       - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
@@ -41,6 +47,7 @@ phases:
 #       - cat /root/.kube/config
       - kubectl get namespaces
       - helm init --client-only --skip-refresh
+      - echo "Happy Helming"
       - helm ls 
       - helm lint grafana
       # - helm upgrade -i install my-grafana grafana
