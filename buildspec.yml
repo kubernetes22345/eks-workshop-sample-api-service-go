@@ -41,7 +41,7 @@ phases:
 #       - cat /root/.kube/config
       - helm init --client-only --skip-refresh
       - helm ls 
-      - helm upgrade -i install grafana stable/grafana 
+      - helm install --name my-grafana stable/grafana 
 #       - kubectl version --short
 #       - kubectl get nodes
 #       - kubectl apply -f hello-k8s.yml
