@@ -61,11 +61,11 @@ phases:
       - helm ls 
       - helm lint $CHART_NAME
       - |-
-          if [ "$CHART_NAME" -gt "ok" ]; then
+          if [ "lint" -gt "ok" ]; then
             echo "Helm Chart $CHART_NAME is good for dry run"
           fi
       # - helm upgrade -i install my-grafana grafana
-      - helm upgrade -i --install $RELEASE_NAME $CHART_NAME --namespace $NAMESPACE --dry-run
+      - helm upgrade -i --install --dry-run $RELEASE_NAME $CHART_NAME --namespace $NAMESPACE 
       # - |-
       #     if [ "$CHART_NAME" -gt "ok" ]; then
       #       echo "Helm Chart $CHART_NAME is good for dry run"
