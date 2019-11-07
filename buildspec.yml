@@ -8,7 +8,7 @@ env:
     NAMESPACE: "grafana"
     CHART_NAME: "grafana"
     RELEASE_NAME: "my-grafana"
-    EKS_CLUSTER: "eg-testing-eks-cluster"
+    EKS_CLUSTER: "test2"
     REGION: "us-east-1"
     
 phases:
